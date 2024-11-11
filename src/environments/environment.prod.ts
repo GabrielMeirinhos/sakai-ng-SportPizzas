@@ -1,4 +1,6 @@
-export const firebaseConfig = {
+export const environment = {
+  production: false,
+   firebaseConfig : {
     apiKey: "AIzaSyD9F2YA4aHh_7ld76K7Hw2E5B9axEl4JOk",
     authDomain: "crud-sportpizzas.firebaseapp.com",
     databaseURL: "https://crud-sportpizzas-default-rtdb.firebaseio.com",
@@ -7,4 +9,5 @@ export const firebaseConfig = {
     messagingSenderId: "325929883080",
     appId: "1:325929883080:web:8e31bba370f64e7536dcfd",
     measurementId: "G-NNSRYRR8HC"
-  };
+  }
+};
