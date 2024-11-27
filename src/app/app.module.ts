@@ -23,7 +23,7 @@ import { PizzaService } from './demo/service/pizza.service';
     imports: [
         AppRoutingModule,
         AppLayoutModule,
-        AngularFireModule.initializeApp(environment.firebaseConfig), // Alterado para firebaseConfig
+        AngularFireModule.initializeApp(environment.firebase), // Alterado para firebaseConfig
         AngularFireDatabaseModule,
     ],
     providers: [

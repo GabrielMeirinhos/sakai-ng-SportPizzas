@@ -4,7 +4,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from 'src/environments/environment';
 
-if (environment.firebaseConfig) {
+if (environment.firebase) {
   enableProdMode();
 }
 
