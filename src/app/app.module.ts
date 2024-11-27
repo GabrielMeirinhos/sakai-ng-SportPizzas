@@ -14,6 +14,7 @@ import { PhotoService } from './demo/service/photo.service';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
+import { PizzaService } from './demo/service/pizza.service';
 
 @NgModule({
     declarations: [
@@ -28,7 +29,7 @@ import { environment } from '../environments/environment';
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService
+        PhotoService, ProductService, PizzaService,
     ],
     bootstrap: [AppComponent]
 })

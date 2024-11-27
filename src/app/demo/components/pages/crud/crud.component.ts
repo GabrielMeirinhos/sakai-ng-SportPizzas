@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from 'src/app/demo/api/product';
+import { Pizza } from 'src/app/demo/api/pizza.model';  // Changed to Pizza model
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { ProductService } from 'src/app/demo/service/product.service';
+import { PizzaService } from 'src/app/demo/service/pizza.service';  // Changed to PizzaService
 
 @Component({
     templateUrl: './crud.component.html',
@@ -10,17 +10,17 @@ import { ProductService } from 'src/app/demo/service/product.service';
 })
 export class CrudComponent implements OnInit {
 
-    productDialog: boolean = false;
+    pizzaDialog: boolean = false;  // Changed variable name to pizzaDialog
 
-    deleteProductDialog: boolean = false;
+    deletePizzaDialog: boolean = false;  // Changed to deletePizzaDialog
 
-    deleteProductsDialog: boolean = false;
+    deletePizzasDialog: boolean = false;  // Changed to deletePizzasDialog
 
-    products: Product[] = [];
+    pizzas: Pizza[] = [];  // Changed to pizzas array
 
-    product: Product = {};
+    pizza: Pizza = {};  // Changed to pizza
 
-    selectedProducts: Product[] = [];
+    selectedPizzas: Pizza[] = [];  // Changed to selectedPizzas
 
     submitted: boolean = false;
 
@@ -30,13 +30,13 @@ export class CrudComponent implements OnInit {
 
     rowsPerPageOptions = [5, 10, 20];
 
-    constructor(private productService: ProductService, private messageService: MessageService) { }
+    constructor(private pizzaService: PizzaService, private messageService: MessageService) { }  // Changed to PizzaService
 
     ngOnInit() {
-        this.productService.getProducts().then(data => this.products = data);
+        this.pizzaService.getPizzas().subscribe(data => this.pizzas = data);  // Changed to pizzaService
 
         this.cols = [
-            { field: 'product', header: 'Product' },
+            { field: 'name', header: 'Pizza' },  // Changed field to name for pizza
             { field: 'price', header: 'Price' },
             { field: 'category', header: 'Category' },
             { field: 'rating', header: 'Reviews' },
@@ -48,74 +48,80 @@ export class CrudComponent implements OnInit {
             { label: 'LOWSTOCK', value: 'lowstock' },
             { label: 'OUTOFSTOCK', value: 'outofstock' }
         ];
+
     }
 
     openNew() {
-        this.product = {};
+        console.log('openNew')
+        this.pizza = {};  // Changed to pizza
         this.submitted = false;
-        this.productDialog = true;
+        this.pizzaDialog = true;  // Changed to pizzaDialog
     }
 
-    deleteSelectedProducts() {
-        this.deleteProductsDialog = true;
+    deleteSelectedPizzas() {
+        this.deletePizzaDialog = true;  // Changed to deletePizzasDialog
     }
 
-    editProduct(product: Product) {
-        this.product = { ...product };
-        this.productDialog = true;
+    editPizza(pizza: Pizza) {  // Changed to editPizza
+        this.pizza = { ...pizza };  // Changed to pizza
+        this.pizzaDialog = true;  // Changed to pizzaDialog
     }
 
-    deleteProduct(product: Product) {
-        this.deleteProductDialog = true;
-        this.product = { ...product };
+    deletePizza(pizza: Pizza) {  // Changed to deletePizza
+        this.deletePizzaDialog = true;  // Changed to deletePizzaDialog
+        this.pizza = { ...pizza };  // Changed to pizza
     }
 
     confirmDeleteSelected() {
-        this.deleteProductsDialog = false;
-        this.products = this.products.filter(val => !this.selectedProducts.includes(val));
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-        this.selectedProducts = [];
+        
+        this.deletePizzaDialog = false;  // Changed to deletePizzasDialog
+        this.pizzas = this.pizzas.filter(val => !this.selectedPizzas.includes(val));  // Changed to selectedPizzas and pizzas
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Pizzas Deleted', life: 3000 });  // Changed message to Pizzas
+        this.selectedPizzas = [];  // Changed to selectedPizzas
     }
 
     confirmDelete() {
-        this.deleteProductDialog = false;
-        this.products = this.products.filter(val => val.id !== this.product.id);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
-        this.product = {};
+        this.deletePizzaDialog = false;  // Changed to deletePizzaDialog
+        // this.pizzas = this.pizzas.filter(val => val.id !== this.pizza.id);  // Changed to pizza and pizzas
+        this.pizzaService.deletePizza(this.pizza.key);
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Pizza Deleted', life: 3000 });  // Changed message to Pizza
+        this.pizza = {};  // Changed to pizza
     }
 
     hideDialog() {
-        this.productDialog = false;
+        this.pizzaDialog = false;  // Changed to pizzaDialog
         this.submitted = false;
     }
 
-    saveProduct() {
+    savePizza() {  // Changed to savePizza
         this.submitted = true;
-
-        if (this.product.name?.trim()) {
-            if (this.product.id) {
+        console.log('SavePizza')
+        if (this.pizza.name?.trim()) {  // Changed to pizza
+            if (this.pizza.id) {  // Changed to pizza
                 // @ts-ignore
-                this.product.inventoryStatus = this.product.inventoryStatus.value ? this.product.inventoryStatus.value : this.product.inventoryStatus;
-                this.products[this.findIndexById(this.product.id)] = this.product;
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
+                this.pizza.inventoryStatus = this.pizza.inventoryStatus.value ? this.pizza.inventoryStatus.value : this.pizza.inventoryStatus;  // Changed to pizza
+                this.pizzaService.updatePizza(this.pizza.id, this.pizza)
+                this.pizzas[this.findIndexById(this.pizza.id)] = this.pizza;  // Changed to pizza and pizzas
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Pizza Updated', life: 3000 });  // Changed message to Pizza
             } else {
-                this.productService.createProduct(this.product);
+                this.pizzaService.createPizza(this.pizza)
                 // @ts-ignore
-                this.product.inventoryStatus = this.product.inventoryStatus ? this.product.inventoryStatus.value : 'INSTOCK';
-                this.products.push(this.product);
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
+                this.pizza.inventoryStatus = this.pizza.inventoryStatus ? this.pizza.inventoryStatus.value : 'INSTOCK';  // Changed to pizza
+                this.pizzas.push(this.pizza);  // Changed to pizzas
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Pizza Created', life: 3000 });
+                console.log(this.messageService.messageObserver) // Changed message to Pizza
             }
 
-            this.products = [...this.products];
-            this.productDialog = false;
-            this.product = {};
+            this.pizzas = [...this.pizzas];  // Changed to pizzas
+            this.pizzaDialog = false;  // Changed to pizzaDialog
+            this.pizza = {};  // Changed to pizza
         }
     }
 
     findIndexById(id: string): number {
         let index = -1;
-        for (let i = 0; i < this.products.length; i++) {
-            if (this.products[i].id === id) {
+        for (let i = 0; i < this.pizzas.length; i++) {  // Changed to pizzas
+            if (this.pizzas[i].id === id) {  // Changed to pizzas and pizza
                 index = i;
                 break;
             }
