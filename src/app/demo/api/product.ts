@@ -5,7 +5,7 @@ interface InventoryStatus {
 export interface Product {
     id?: string;
     code?: string;
-    name?: string;
+    nome?: string;
     description?: string;
     price?: number;
     quantity?: number;

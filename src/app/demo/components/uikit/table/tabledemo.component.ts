@@ -114,7 +114,7 @@ export class TableDemoComponent implements OnInit {
 
     expandAll() {
         if (!this.isExpanded) {
-            this.products.forEach(product => product && product.name ? this.expandedRows[product.name] = true : '');
+            this.products.forEach(product => product && product.nome ? this.expandedRows[product.nome] = true : '');
 
         } else {
             this.expandedRows = {};
